@@ -26,9 +26,10 @@ interface CerealStorage {
     fun addCereal(cereal: Cereal, amount: Float): Float
 
     /**
+     * Вынимает крупу из контейнера (после этого в контейнере крупы должно стать меньше)
      * @param cereal крупа, которую нужно взять из контейнера
      * @param amount количество крупы
-     * @return количество полученной крупы или остаток, если было меньше
+     * @return количество полученной крупы или остаток, если в контейнере было меньше
      * @throws IllegalArgumentException если передано отрицательное значение
      */
     fun getCereal(cereal: Cereal, amount: Float): Float
