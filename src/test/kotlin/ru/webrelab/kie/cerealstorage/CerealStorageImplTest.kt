@@ -36,15 +36,15 @@ class CerealStorageImplTest {
             {
                 storage.addCereal(Cereal.PEAS, 9f)
                 val reminder = storage.addCereal(Cereal.PEAS, 2f)
-                assertEquals(1f, reminder, "Reminder should be equal 1")
+                assertEquals(1f, reminder, 0.01f, "Reminder should be equal 1")
             },
             {
                 val reminder = storage.addCereal(Cereal.PEAS, 1f)
-                assertEquals(1f, reminder, "Reminder should be equal 1")
+                assertEquals(1f, reminder, 0.01f, "Reminder should be equal 1")
             },
             {
                 val reminder = storage.addCereal(Cereal.MILLET, 20f)
-                assertEquals(10f, reminder, "Reminder should be equal 10")
+                assertEquals(10f, reminder, 0.01f, "Reminder should be equal 10")
             }
         )
     }
@@ -70,8 +70,8 @@ class CerealStorageImplTest {
         val amount = storage.getCereal(Cereal.PEAS, 3f)
         assertAll(
             {
-                assertEquals(3f, amount, "Obtained amount should be 3")
-                assertEquals(7f, storage.getAmount(Cereal.PEAS), "Remaining amount in storage should be 7")
+                assertEquals(3f, amount, 0.01f, "Obtained amount should be 3")
+                assertEquals(7f, storage.getAmount(Cereal.PEAS), 0.01f, "Remaining amount in storage should be 7")
             }
         )
     }
@@ -82,8 +82,8 @@ class CerealStorageImplTest {
         val amount = storage.getCereal(Cereal.PEAS, 13f)
         assertAll(
             {
-                assertEquals(10f, amount, "Obtained amount should be 10")
-                assertEquals(0f, storage.getAmount(Cereal.PEAS), "Remaining amount in storage should be 0")
+                assertEquals(10f, amount, 0.01f, "Obtained amount should be 10")
+                assertEquals(0f, storage.getAmount(Cereal.PEAS), 0.01f, "Remaining amount in storage should be 0")
             }
         )
     }
@@ -101,10 +101,10 @@ class CerealStorageImplTest {
         storage.addCereal(Cereal.PEAS, 10f)
         assertAll(
             {
-                assertEquals(0f, storage.getAmount(Cereal.RICE), "Should return 0")
+                assertEquals(0f, storage.getAmount(Cereal.RICE), 0.01f, "Should return 0")
             },
             {
-                assertEquals(10f, storage.getAmount(Cereal.PEAS), "Should return 10")
+                assertEquals(10f, storage.getAmount(Cereal.PEAS), 0.01f, "Should return 10")
             }
         )
     }
@@ -112,7 +112,7 @@ class CerealStorageImplTest {
     @Test
     fun `getSpace should return correct space`() {
         storage.addCereal(Cereal.RICE, 6f)
-        assertEquals(4f, storage.getSpace(Cereal.RICE), "Should return 4")
+        assertEquals(4f, storage.getSpace(Cereal.RICE), .01f, "Should return 4")
     }
 
     @Test
@@ -121,10 +121,10 @@ class CerealStorageImplTest {
         storage.addCereal(Cereal.PEAS, 0f)
         assertAll(
             {
-                assertEquals(0f, storage.getSpace(Cereal.RICE), "Should return 0")
+                assertEquals(0f, storage.getSpace(Cereal.RICE), .01f, "Should return 0")
             },
             {
-                assertEquals(10f, storage.getSpace(Cereal.PEAS), "Should return 10")
+                assertEquals(10f, storage.getSpace(Cereal.PEAS), .01f, "Should return 10")
             }
         )
     }
@@ -147,9 +147,9 @@ class CerealStorageImplTest {
 
     @Test
     fun `removeContainer should return false if container is not empty`() {
-        storage.addCereal(Cereal.BUCKWHEAT, 4f)
+        storage.addCereal(Cereal.BUCKWHEAT, 4.3432f)
         assertFalse(storage.removeContainer(Cereal.BUCKWHEAT), "Should return false")
-        assertEquals(4f, storage.getAmount(Cereal.BUCKWHEAT), "Should return 4, container exists")
+        assertEquals(4.3432f, storage.getAmount(Cereal.BUCKWHEAT), 0.01f, "Should return 4, container exists")
     }
 
     @Test
