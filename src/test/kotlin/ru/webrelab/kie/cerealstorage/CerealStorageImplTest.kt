@@ -158,4 +158,15 @@ class CerealStorageImplTest {
             storage.removeContainer(Cereal.RICE)
         }
     }
+
+    @Test
+    fun `check toString`() {
+        storage.addCereal(Cereal.RICE, 10f)
+        storage.addCereal(Cereal.PEAS, 1f)
+        assertEquals("""Storage:
+            |   container capacity: 10.0
+            |   storage capacity: 20.0
+            |   Storage contains:
+            |   RICE: 10.0, PEAS: 1.0""", storage.toString())
+    }
 }

@@ -61,7 +61,14 @@ class CerealStorageImpl(
     }
 
     override fun toString(): String {
-        return storage.toString()
+        val storageContent = if (!storage.isEmpty())
+            storage.entries.joinToString(separator = ", ") { "${it.key}: ${it.value}" }
+            else "Storage is empty"
+        return """Storage:
+            |   container capacity: $containerCapacity
+            |   storage capacity: $storageCapacity
+            |   Storage contains:
+            |   $storageContent"""
     }
 
 }
