@@ -20,4 +20,28 @@ class CerealStorageImpl(
 
     private val storage = mutableMapOf<Cereal, Float>()
 
+    override fun addCereal(cereal: Cereal, amount: Float): Float {
+        TODO("Not yet implemented")
+    }
+
+    override fun getCereal(cereal: Cereal, amount: Float): Float {
+        TODO("Not yet implemented")
+    }
+
+    override fun removeContainer(cereal: Cereal): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAmount(cereal: Cereal): Float {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSpace(cereal: Cereal): Float {
+        TODO("Not yet implemented")
+    }
+
+    override fun toString(): String {
+        TODO("Not yet implemented")
+    }
+
 }
