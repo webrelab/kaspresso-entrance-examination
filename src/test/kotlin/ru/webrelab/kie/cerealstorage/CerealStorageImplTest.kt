@@ -158,8 +158,17 @@ class CerealStorageImplTest {
 
     }
 
-//    @Test
-//    fun toString() {
-//        TODO("Not yet implemented")
-//    }
+    @Test
+    fun `toString should return correct representation`() {
+        val cerealStorageImpl = CerealStorageImpl(10f, 20f)
+        assertEquals(
+            "CerealStorageImpl(containerCapacity=10.0, storageCapacity=20.0)",
+            cerealStorageImpl.toString()
+        )
+
+        assertNotEquals(
+            "CerealStorageImpl(containerCapacity=10.0)",
+            cerealStorageImpl.toString()
+        )
+    }
 }

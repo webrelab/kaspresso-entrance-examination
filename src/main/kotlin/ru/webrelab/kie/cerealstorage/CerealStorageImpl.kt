@@ -1,5 +1,7 @@
 package ru.webrelab.kie.cerealstorage
 
+import kotlin.math.abs
+
 class CerealStorageImpl(
     override val containerCapacity: Float,
     override val storageCapacity: Float
@@ -21,27 +23,81 @@ class CerealStorageImpl(
     private val storage = mutableMapOf<Cereal, Float>()
 
     override fun addCereal(cereal: Cereal, amount: Float): Float {
-        TODO("Not yet implemented")
+        if (amount < 0) {
+            throw IllegalArgumentException("Количество крупы не может быть отрицательным")
+        }
+        return if (storage.containsKey(cereal)) {
+            val tempValue = storage[cereal]!! + amount
+            putCereal(cereal, tempValue)
+        } else {
+            if ((storageCapacity - storage.count() * containerCapacity) >= containerCapacity) {
+                putCereal(cereal, amount)
+            } else {
+                throw IllegalStateException("Недостаточно места в хранилище")
+            }
+        }
+    }
+
+    private fun putCereal(cereal: Cereal, amount: Float): Float {
+        return if (amount >= containerCapacity) {
+            storage[cereal] = containerCapacity
+            amount - containerCapacity
+        } else {
+            storage[cereal] = amount
+            0f
+        }
     }
 
     override fun getCereal(cereal: Cereal, amount: Float): Float {
-        TODO("Not yet implemented")
+        if (amount < 0) {
+            throw IllegalArgumentException("Количество крупы не может быть отрицательным")
+        }
+        return if (storage.containsKey(cereal)) {
+            val tempValue = storage[cereal]!! - amount
+            if (tempValue < 0) {
+                storage[cereal] = 0f
+                tempValue + amount
+            } else {
+                storage[cereal] = tempValue
+                amount
+            }
+        } else {
+            0f
+        }
     }
 
     override fun removeContainer(cereal: Cereal): Boolean {
-        TODO("Not yet implemented")
+        if (!storage.containsKey(cereal)) return true
+        return if (abs(storage[cereal]!!) <= 0.01) {
+            storage.remove(cereal)
+            true
+        } else {
+            false
+        }
     }
 
     override fun getAmount(cereal: Cereal): Float {
-        TODO("Not yet implemented")
+        return if (cereal in storage) {
+            storage[cereal]!!
+        } else {
+            0f
+        }
     }
 
     override fun getSpace(cereal: Cereal): Float {
-        TODO("Not yet implemented")
+        return if (cereal in storage) {
+            containerCapacity - storage[cereal]!!
+        } else {
+            if ((storageCapacity - storage.count() * containerCapacity) >= containerCapacity) {
+                containerCapacity
+            } else {
+                0f
+            }
+        }
     }
 
     override fun toString(): String {
-        TODO("Not yet implemented")
+        return "CerealStorageImpl(containerCapacity=$containerCapacity, storageCapacity=$storageCapacity)"
     }
 
 }
