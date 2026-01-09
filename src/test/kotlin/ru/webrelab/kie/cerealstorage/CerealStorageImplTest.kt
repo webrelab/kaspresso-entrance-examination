@@ -29,23 +29,22 @@ class CerealStorageImplTest {
     }
 
     @Test
-    fun `should throw if no enough space for amount in container for addCereal`() {
-        storage.addCereal(Cereal.RICE, 500F)
-        assertThrows(IllegalArgumentException::class.java) {
-            storage.addCereal(Cereal.RICE, 600F)
-        }
-    }
-
-    @Test
     fun `should create new container if not exist for addCereal`() {
         storage.addCereal(Cereal.RICE, 500F)
         assertEquals(500F, storage.getAmount(Cereal.RICE), 0.01F)
     }
 
     @Test
-    fun `should return remain amount for addCereal`() {
+    fun `should return amount for addCereal`() {
         val result = storage.addCereal(Cereal.RICE, 600F)
-        assertEquals(400F, result, 0.01F)
+        assertEquals(600F, result, 0.01F)
+    }
+
+    @Test
+    fun `should return added part of amount if no enough space for amount in container for addCereal`() {
+        storage.addCereal(Cereal.RICE, 500F)
+        val result = storage.addCereal(Cereal.RICE, 600F)
+        assertEquals(100F, result, 0.01F)
     }
 
     @Test
@@ -56,15 +55,15 @@ class CerealStorageImplTest {
     }
 
     @Test
-    fun `should return remain amounts for several cereals for addCereal`() {
+    fun `should return amounts for several cereals for addCereal`() {
         storage.addCereal(Cereal.MILLET, 500F)
         storage.addCereal(Cereal.PEAS, 500F)
 
         val resul1 = storage.addCereal(Cereal.MILLET, 200F)
         val resul2 = storage.addCereal(Cereal.PEAS, 300F)
 
-        assertEquals(300F, resul1, 0.01F)
-        assertEquals(200F, resul2, 0.01F)
+        assertEquals(200F, resul1, 0.01F)
+        assertEquals(300F, resul2, 0.01F)
     }
 
     @Test
@@ -72,6 +71,14 @@ class CerealStorageImplTest {
         storage.addCereal(Cereal.RICE, 500F)
         assertThrows(IllegalArgumentException::class.java) {
             storage.getCereal(Cereal.RICE, -10F)
+        }
+    }
+
+    @Test
+    fun `should throw if not possible to add one more container for addCereal`() {
+        storage.addCereal(Cereal.RICE, 1000F)
+        assertThrows(IllegalStateException::class.java) {
+            storage.addCereal(Cereal.RICE, 100F)
         }
     }
 
@@ -112,15 +119,21 @@ class CerealStorageImplTest {
     }
 
     @Test
-    fun `should return false if container was removed because it's not empty`() {
+    fun `should return false if container was not removed because it's not empty`() {
         storage.addCereal(Cereal.RICE, 500F)
         val result = storage.removeContainer(Cereal.RICE)
         assertFalse(result)
     }
 
     @Test
+    fun `should return false if container was not removed because it was not exist`() {
+        val result = storage.removeContainer(Cereal.RICE)
+        assertFalse(result)
+    }
+
+    @Test
     fun `should throw if container not exists for getSpace`() {
-        assertThrows(IllegalArgumentException::class.java) {
+        assertThrows(IllegalStateException::class.java) {
             storage.getSpace(Cereal.RICE)
         }
     }
