@@ -154,6 +154,25 @@ class CerealStorageImplTest {
       storage.getCereal(PEAS, 2f)
     }
   }
+  @Test
+  fun `getAmount returns exact amount for existing cereal`() {
+    storage.fillWith(BUCKWHEAT to 0.1f, MILLET to 2f, BULGUR to 5f)
+    val actualAmount = storage.getAmount(BUCKWHEAT)
+    assertEquals(
+      0.1f, actualAmount,
+      "Количество не равно ожидаемому результату, а равно - $actualAmount"
+    )
+  }
+
+  @Test
+  fun `getAmount returns 0 for non-existing cereal`() {
+    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f, BULGUR to 5f)
+    val actualAmount = storage.getAmount(RICE)
+    assertEquals(
+      0f, actualAmount,
+      "Количество не равно ожидаемому результату, а равно - $actualAmount"
+    )
+  }
 
   @Test
   fun `should return getting amount cereal in case amount less current amount`() {
@@ -237,34 +256,14 @@ class CerealStorageImplTest {
   fun `removeContainer returns false for non-empty container`() {
     storage.fillWith(BUCKWHEAT to 0.01f, MILLET to 2f, BULGUR to 5f)
     assertFalse(
-      storage.removeContainer(BUCKWHEAT), "Для не пустого контейнера должен возвращаться false"
+      storage.removeContainer(BUCKWHEAT), "Для не пустого контейнера возвращаем - false"
     )
   }
 
   @Test
   fun `removeContainer returns true for empty container`() {
     storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f, BULGUR to 0f)
-    assertTrue(storage.removeContainer(BULGUR), "Для не пустого контейнера должен возвращаться true")
-  }
-
-  @Test
-  fun `getAmount returns exact amount for existing cereal`() {
-    storage.fillWith(BUCKWHEAT to 0.1f, MILLET to 2f, BULGUR to 5f)
-    val actualAmount = storage.getAmount(BUCKWHEAT)
-    assertEquals(
-      0.1f, actualAmount,
-      "Количество не равно ожидаемому результату, а равно - $actualAmount"
-    )
-  }
-
-  @Test
-  fun `getAmount returns 0 for non-existing cereal`() {
-    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f, BULGUR to 5f)
-    val actualAmount = storage.getAmount(RICE)
-    assertEquals(
-      0f, actualAmount,
-      "Количество не равно ожидаемому результату, а равно - $actualAmount"
-    )
+    assertTrue(storage.removeContainer(BULGUR), "Для пустого контейнера должен возвращаем - true")
   }
 
   @Test

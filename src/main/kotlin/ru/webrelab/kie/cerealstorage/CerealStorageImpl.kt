@@ -63,7 +63,7 @@ class CerealStorageImpl(
   }
 
   override fun getSpace(cereal: Cereal): Float {
-    val currentAmount = storage[cereal] ?: throw IllegalStateException("На складе контейнера с крупой - $cereal")
+    val currentAmount = storage[cereal] ?: throw IllegalStateException("На складе нет контейнера с крупой - $cereal")
     return containerCapacity - currentAmount
   }
 
