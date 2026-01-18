@@ -19,15 +19,19 @@ class CerealStorageImpl(
   }
 
   private val storage = mutableMapOf<Cereal, Float>()
+  private  var occupiedSpace : Float = 0f
 
   override fun addCereal(cereal: Cereal, amount: Float): Float {
     require(amount >= 0) { "Количество добавляемой крупы не может быть отрицательным" }
-    if (cereal !in storage) {
-      check(storage.values.sum() + containerCapacity <= storageCapacity) {
+    val isNewCereal = cereal !in storage
+      val currentAmount: Float = storage.getOrPut(cereal) { 0f }
+    if(isNewCereal){
+      val freeSpace : Float = storageCapacity - occupiedSpace
+      check(freeSpace >= containerCapacity){
         "В хранилище нет места для контейнера с новой крупой - $cereal"
       }
+      occupiedSpace += containerCapacity
     }
-    val currentAmount: Float = storage.getOrPut(cereal) { 0f }
     val totalContainerAmount: Float = currentAmount + amount
     return if (totalContainerAmount > containerCapacity) {
       val overflow = totalContainerAmount - containerCapacity

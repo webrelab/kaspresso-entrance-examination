@@ -53,7 +53,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `add to container returns 0 when amount equals container capacity`() {
-    storage.fillWith(RICE to 5f, MILLET to 3f)
+    storage.fillWith(RICE to 5f)
     val actualOverflow = storage.addCereal(BUCKWHEAT, 10f)
     assertEquals(
       0f, actualOverflow,
@@ -63,7 +63,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `add to new container returns 0 when amount equals between  0 and container capacity`() {
-    storage.fillWith(BUCKWHEAT to 3f, PEAS to 3f)
+    storage.fillWith(BUCKWHEAT to 3f)
     val actualOverflow = storage.addCereal(MILLET, 5f)
     assertEquals(
       0f, actualOverflow,
@@ -73,7 +73,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `addCereal returns 0 when amount equals capacity plus delta`() {
-    storage.fillWith(BUCKWHEAT to 2f, PEAS to 5f)
+    storage.fillWith(BUCKWHEAT to 2f)
     val actualOverflow = storage.addCereal(MILLET, 10.001f)
     assertEquals(
       0f, actualOverflow, delta,
@@ -83,7 +83,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `addCereal returns overflow when amount by more than delta`() {
-    storage.fillWith(BUCKWHEAT to 2f, PEAS to 5f)
+    storage.fillWith(BUCKWHEAT to 2f)
     val actualOverflow = storage.addCereal(MILLET, 10.011f)
     assertEquals(
       0.01f, actualOverflow, delta,
@@ -103,7 +103,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `addCereal with multi plus returns overflow when amount by more than delta`() {
-    storage.fillWith(BUCKWHEAT to 3f, PEAS to 5f, MILLET to 2f, MILLET to 2f)
+    storage.fillWith(BUCKWHEAT to 3f, MILLET to 2f, MILLET to 2f)
     val actualOverflow = storage.addCereal(MILLET, 6.011f)
     assertEquals(
       0.01f, actualOverflow, delta,
@@ -133,16 +133,17 @@ class CerealStorageImplTest {
 
   @Test
   fun `should throw if lake of place for container`() {
+    val storage = CerealStorageImpl(10f, 22f)
     assertThrows(IllegalStateException::class.java) {
-      storage.fillWith(RICE to 5f, BUCKWHEAT to 3f, MILLET to 3f)
-      storage.addCereal(PEAS, 3f)
+      storage.fillWith(RICE to 1f, BUCKWHEAT to 1f)
+      storage.addCereal(PEAS, 1f)
     }
   }
 
   @Test
   fun `should throw if amount for get cereal is negative`() {
     assertThrows(IllegalArgumentException::class.java) {
-      storage.fillWith(BUCKWHEAT to 3f, MILLET to 2f, PEAS to 5f)
+      storage.fillWith(BUCKWHEAT to 3f, MILLET to 2f)
       storage.getCereal(PEAS, -2f)
     }
   }
@@ -154,9 +155,10 @@ class CerealStorageImplTest {
       storage.getCereal(PEAS, 2f)
     }
   }
+
   @Test
   fun `getAmount returns exact amount for existing cereal`() {
-    storage.fillWith(BUCKWHEAT to 0.1f, MILLET to 2f, BULGUR to 5f)
+    storage.fillWith(BUCKWHEAT to 0.1f, MILLET to 2f)
     val actualAmount = storage.getAmount(BUCKWHEAT)
     assertEquals(
       0.1f, actualAmount,
@@ -166,7 +168,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `getAmount returns 0 for non-existing cereal`() {
-    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f, BULGUR to 5f)
+    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f)
     val actualAmount = storage.getAmount(RICE)
     assertEquals(
       0f, actualAmount,
@@ -176,7 +178,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `should return getting amount cereal in case amount less current amount`() {
-    storage.fillWith(BUCKWHEAT to 3f, MILLET to 2f, PEAS to 5f)
+    storage.fillWith(BUCKWHEAT to 3f, PEAS to 5f)
     val receivedAmount = storage.getCereal(PEAS, 3f)
     val currentAmount = storage.getAmount(PEAS)
     assertEquals(
@@ -236,7 +238,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `should return getting amount cereal in case amount more current amount`() {
-    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f, PEAS to 5f)
+    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f)
     val actualRemains = storage.getCereal(BUCKWHEAT, 2.01f)
     assertEquals(
       2f, actualRemains, delta,
@@ -246,7 +248,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `removeContainer returns false for non-existent cereal`() {
-    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f, BULGUR to 5f)
+    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f)
     assertFalse(
       storage.removeContainer(PEAS), "Для несуществующего контейнера должен возвращаться false"
     )
@@ -254,7 +256,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `removeContainer returns false for non-empty container`() {
-    storage.fillWith(BUCKWHEAT to 0.01f, MILLET to 2f, BULGUR to 5f)
+    storage.fillWith(BUCKWHEAT to 0.01f, MILLET to 2f)
     assertFalse(
       storage.removeContainer(BUCKWHEAT), "Для не пустого контейнера возвращаем - false"
     )
@@ -262,7 +264,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `removeContainer returns true for empty container`() {
-    storage.fillWith(BUCKWHEAT to 2f, MILLET to 2f, BULGUR to 0f)
+    storage.fillWith(BUCKWHEAT to 2f, BULGUR to 0f)
     assertTrue(storage.removeContainer(BULGUR), "Для пустого контейнера должен возвращаем - true")
   }
 
@@ -276,7 +278,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `getSpace returns positive value for existing cereal`() {
-    storage.fillWith(BUCKWHEAT to 2f, PEAS to 2f, BULGUR to 5f, MILLET to 5f)
+    storage.fillWith(BUCKWHEAT to 2f, PEAS to 2f)
     val actualSpace = storage.getSpace(BUCKWHEAT)
     assertEquals(
       8f, actualSpace,
@@ -286,7 +288,7 @@ class CerealStorageImplTest {
 
   @Test
   fun `getSpace returns value within delta when container almost full`() {
-    storage.fillWith( RICE to 9.99f, BUCKWHEAT to 9f)
+    storage.fillWith(RICE to 9.99f, BUCKWHEAT to 9f)
     val actualSpace = storage.getSpace(RICE)
     assertEquals(
       0.01f, actualSpace, delta,
